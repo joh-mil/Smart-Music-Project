@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Songs</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e0f2fe;
+            color: #0f172a;
+            zoom: 1.5;
+        }
+        .navbar {
+            background: #1e3a8a;
+            padding: 40px 60px;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            font-size:50px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .navbar a:hover { color: #38bdf8; }
+        .container { padding: 80px 40px; text-align: center; font-size:35px; }
+        .upload-box {
+            background: white;
+            padding: 60px;
+            border-radius: 60px;
+            width: 1000px;
+            max-width: 95%;
+            margin: auto;
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.25);
+            border: 2px solid #bfdbfe;
+        }
+        .upload-icon { font-size: 150px; margin-bottom: 20px; }
+        .upload-box h2 { color: #1e3a8a; margin-bottom: 15px; font-size: 60px; font-weight: 800; }
+        .upload-box p { color: #475569; margin-bottom: 40px; font-size: 35px; line-height: 1.4; }
+        .file-area { border: 4px dashed #60a5fa; background: #f0f7ff; padding: 60px; border-radius: 30px; margin-bottom: 30px; }
+        input[type="file"] { width: 100%; font-size: 35px; }
+        
+        /* Form Field Styling */
+        .form-group {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+            color: #1e3a8a;
+        }
+        .form-group input[type="text"], .form-group select {
+            width: 100%;
+            font-size: 32px;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #bfdbfe;
+            box-sizing: border-box;
+            background: white;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 30px 50px; border: none; border-radius: 20px; background: #2563eb; color: white;
+            font-weight: 900; cursor: pointer; width: 100%; font-size: 50px; transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            margin-top: 20px;
+        }
+        button:hover { background: #1d4ed8; transform: translateY(-5px); }
+        .alert-box {
+            background: #ffeeec; border: 3px solid #f87171; color: #b91c1c; padding: 25px;
+            border-radius: 25px; width: 1000px; max-width: 95%; margin: 30px auto; text-align: left; font-size: 32px;
+        }
+        .song-list { margin-top: 80px; }
+        .song-list h2 { color: #1e3a8a; font-size: 60px; font-weight: 800; margin-bottom: 40px; }
+        .song {
+            background: white; padding: 40px; margin: 30px auto; width: 90%; border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1); text-align: left; font-size: 40px;
+        }
+        .song-detail { margin: 15px 0; font-size: 36px; color: #334155; }
+        .song-detail b { color: #1e3a8a; }
+        .loading { display: none; margin-top: 25px; color: #2563eb; font-weight: bold; font-size: 34px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar" style="position: relative; align-items: center;">
+    <div><a href="/home" style="margin-left: 0;">← Back to home</a></div>
+    <div style="position: absolute; left: 50%; transform: translateX(-50%);">🎵 Upload Songs</div>
+</div>
+
+<div class="container">
+
+    {% if message %}
+    <div class="alert-box" style="background: #eff6ff; border-color: #3b82f6; color: #1d4ed8;">
+        ℹ️ {{ message }}
+    </div>
+    {% endif %}
+
+    {% if duplicate_errors %}
+        {% for error in duplicate_errors %}
+        <div class="alert-box">
+            ⚠️ <b>Upload Skipped:</b> {{ error }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="upload-box">
+        <div class="upload-icon">⬆️</div>
+        <h2>Upload Audio Files</h2>
+        <p>Provide metadata details or leave blank for automatic tracking and classification.</p>
+
+        <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+            
+            <div class="form-group">
+                <label>Select Music File:</label>
+                <div class="file-area">
+                    <input type="file" name="audio_files" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Song Name (Optional):</label>
+                <input type="text" name="song_name" placeholder="Leave empty to auto-extract via system">
+            </div>
+
+            <div class="form-group">
+                <label>Singer/Artist Name (Optional):</label>
+                <input type="text" name="singer" placeholder="Leave empty to auto-extract via system">
+            </div>
+
+            <div class="form-group">
+                <label>Choose Genre Selection Mode:</label>
+                <select name="user_genre">
+                    <option value="auto">🤖 Let AI Track and Predict Automatically</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Classical">Classical</option>
+                    <option value="Hip-Hop">Hip-Hop</option>
+                    <option value="Jazz">Jazz</option>
+                </select>
+            </div>
+
+            <button type="submit">Upload and Process Song</button>
+            
+            <div id="loadingText" class="loading">
+                Analyzing audio properties & training genre metrics... Please wait 🎵
+            </div>
+        </form>
+    </div>
+
+    {% if predicted_results %}
+    <div style="background: white; margin: 40px auto; width: 1000px; max-width: 95%; padding: 40px; border-radius: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 3px solid #93c5fd;">
+        <h2 style="color:#1e3a8a; font-size:55px; margin-bottom:30px;">🤖 AI Prediction Result</h2>
+        {% for result in predicted_results %}
+        <div style="background:#eff6ff; padding:30px; border-radius:25px; margin-bottom:25px; text-align:left;">
+            <div class="song-detail"><b>Song:</b> {{ result.title }}</div>
+            <div class="song-detail"><b>Singer:</b> {{ result.artist }}</div>
+            <div class="song-detail"><b>Genre:</b> <span style="color:#2563eb; font-weight:bold;">{{ result.genre }}</span></div>
+            <div class="song-detail"><b>Mood:</b> <span style="color:#0f766e; font-weight:bold;">{{ result.mood }}</span></div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="song-list">
+        <h2>Your Uploaded Songs</h2>
+        {% if songs %}
+            {% for song in songs %}
+            <div class="song">
+                <div class="song-detail"><b>Song:</b> {{ song.song_name }}</div>
+                <div class="song-detail"><b>Singer:</b> {{ song.singer }}</div>
+                <div class="song-detail"><b>Genre:</b> <span style="color:#2563eb; font-weight:bold;">{{ song.genre }}</span></div>
+                <div class="song-detail"><b>Mood:</b> <span style="color:#0f766e; font-weight:bold;">{{ song.mood }}</span></div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No uploaded songs yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function showLoading() {
+    document.getElementById("loadingText").style.display = "block";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Dataset Songs</title>
+    <style>
+        body{
+            margin:0;
+            font-family:Arial,sans-serif;
+            background:#f1f5f9;
+            zoom: 1.0;
+            font-size: 35px;
+        }
+
+        .header{
+            background:#0f172a;
+            color:white;
+            padding:40px;
+            text-align:center;
+        }
+
+        .header h1 {
+            font-size: 85px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .header p {
+            font-size: 40px;
+            opacity: 0.9;
+        }
+
+        .container{
+            width:95%;
+            max-width:1600px;
+            margin:40px auto;
+            text-align: center;
+        }
+
+        .top-bar{
+            display:flex;
+            justify-content:flex-start;
+            margin-bottom:20px;
+        }
+
+        .back-btn{
+            background:#2563eb;
+            color:white;
+            padding:25px 50px;
+            border-radius:20px;
+            text-decoration:none;
+            font-weight:bold;
+            font-size: 45px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .back-btn:hover{
+            background:#1d4ed8;
+        }
+
+        .upload-box{
+            background:white;
+            padding:80px;
+            border-radius:35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            max-width: 1400px;
+            margin: 50px auto;
+            border: 2px solid #e2e8f0;
+        }
+
+        .upload-box h2 {
+            font-size: 65px;
+            color: #1e3a8a;
+            margin-bottom: 40px;
+            font-weight: 900;
+        }
+
+        .file-input-wrapper {
+            margin-bottom: 50px;
+            padding: 60px;
+            border: 5px dashed #94a3b8;
+            border-radius: 30px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        input[type="file"] {
+            font-size: 35px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .upload-submit-btn{
+            background:#2563eb;
+            color:white;
+            padding:35px 100px;
+            border: none;
+            border-radius:25px;
+            font-size:50px;
+            font-weight:900;
+            cursor:pointer;
+            transition: 0.3s;
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
+        }
+
+        .upload-submit-btn:hover{
+            background:#1d4ed8;
+            transform: translateY(-5px);
+        }
+
+        .info-text {
+            font-size: 35px;
+            color: #475569;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⬆️ Upload Dataset Songs</h1>
+    <p>Smart Music Player Admin Panel</p>
+</div>
+
+<div class="container">
+
+    <div class="top-bar">
+        <a href="/admin-dashboard" class="back-btn">
+            ⬅ Back Dashboard
+        </a>
+    </div>
+
+    <div class="upload-box">
+        <h2>Add New Music to Database</h2>
+        <p class="info-text">Select one or more MP3 files to upload them to the global system dataset.</p>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" name="audio_files" accept=".mp3" multiple required>
+            </div>
+            
+            <button type="submit" class="upload-submit-btn">🚀 Start Upload Process</button>
+        </form>
+    </div>
+
+    <div class="upload-box" style="margin-top: 60px;">
+        <h2 style="margin-bottom: 50px; font-size: 65px; font-weight: 900; color: #1e3a8a;">Current Dataset Songs</h2>
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 32px;">
+            <thead>
+                <tr style="background: #1e3a8a; color: white;">
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Song Name</th>
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Artist</th>
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Genre</th>
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Mood</th>
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Uploaded By</th>
+                    <th style="padding: 30px; border: 2px solid #bfdbfe; font-weight: 900;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr style="background: white;">
+                    <td style="padding: 30px; border: 1px solid #e2e8f0; font-weight: 700;">{{ song.song_name }}</td>
+                    <td style="padding: 30px; border: 1px solid #e2e8f0; font-weight: 700;">{{ song.singer }}</td>
+                    <td style="padding: 30px; border: 1px solid #e2e8f0; font-weight: 700;">{{ song.genre }}</td>
+                    <td style="padding: 30px; border: 1px solid #e2e8f0; font-weight: 700;">{{ song.mood }}</td>
+                    <td style="padding: 30px; border: 1px solid #e2e8f0; font-weight: 700;">{{ song.uploaded_by }}</td>
+                    <td style="padding: 30px; border: 1px solid #e2e8f0;">
+                        <a href="/delete_song?filename={{ song.filename }}" style="color: #ef4444; font-weight: 900; text-decoration: none; font-size: 30px; display: flex; align-items: center; gap: 10px;" onclick="return confirm('Delete this song?')">🗑️ Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

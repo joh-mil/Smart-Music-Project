@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project Presentation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Adjusting the gradient to match the purplish/sky hue in the image */
+            background: linear-gradient(to bottom, #7e57c2, #5c6bc0, #3f51b5);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .header-section {
+            margin-top: 120px;
+            padding: 0 40px;
+            z-index: 10;
+        }
+
+        .college-name {
+            font-size: 150px;
+            font-weight: bold;
+            margin: 5px 0;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .course-name {
+            font-size: 110px;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-title {
+            font-size: 150px;
+            font-weight: bold;
+            margin: 40px 0;
+            padding: 0 50px;
+            line-height: 1.1;
+            text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+        }
+
+        .details-section {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin: 40px auto 0 auto;
+            padding-left: 100px;
+            font-size: 90px;
+            line-height: 1.3;
+            text-align: left;
+            z-index: 10;
+        }
+
+        .details-section strong {
+            font-size: 130px;
+        }
+
+        /* Original buttons and bottom bar exactly as they were */
+        .bottom-bar {
+            position: absolute;
+            bottom: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+            box-sizing: border-box;
+            z-index: 20;
+        }
+
+        .btn {
+            padding: 50px 100px;
+            font-size: 80px;
+            font-weight: bold;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .exit-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .exit-btn:hover {
+            background: #dc2626;
+        }
+
+        .proceed-btn {
+            background: #22c55e;
+            color: white;
+        }
+
+        .proceed-btn:hover {
+            background: #16a34a;
+        }
+
+        /* Decorative background elements to simulate clouds/texture */
+        .circle-1 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            top: -100px;
+            left: -150px;
+            filter: blur(40px);
+        }
+
+        .circle-2 {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            bottom: -200px;
+            right: -200px;
+            filter: blur(50px);
+        }
+
+        .circle-3 {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 70%);
+            top: 30%;
+            left: 30%;
+            filter: blur(60px);
+        }
+
+        .logo-left {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 550px;
+            /* Adjust this to make the logo bigger or smaller */
+            height: auto;
+            border-radius: 50%;
+            z-index: 50;
+        }
+
+        .logo-right {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 550px;
+            /* Adjust this to make the logo bigger or smaller */
+            height: auto;
+            border-radius: 50%;
+            z-index: 50;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logos -->
+    <img src="/static/logo.png" class="logo-left" alt="College Logo Left">
+    <img src="/static/logo.png" class="logo-right" alt="College Logo Right">
+
+    <!-- Background cloud elements -->
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="circle-3"></div>
+
+    <div class="header-section">
+        <div class="college-name">GAYATRI VIDYA PARISHAD</div>
+        <div class="college-name">COLLEGE FOR DEGREE AND PG COURSES (A)</div>
+        <div class="course-name">Bachelor Of Computer Applications</div>
+        <div class="project-title"><br>SMART MUSIC USING AI & ML</div>
+    </div>
+
+    <div class="details-section">
+        <div class="left-column">
+            <strong>Project Guide:</strong><br>
+            Dr. P. Srinivasa Rao<br>
+            Sr. Assistant Professor<br>
+            Department of Computer Applications
+        </div>
+
+        <div class="right-column">
+            <strong>By</strong><br>
+            B.Siddhartha Reddy<br>
+            (2023-2402017)<br>
+            BCA(2023-26)<br>
+            SEM-VI<br>
+            N.John Milton<br>
+            (2023-2402004)<br>
+            BCA(2023-26)<br>
+            SEM-VI<br>
+        </div>
+    </div>
+
+    <!-- The original massive buttons exactly as requested -->
+    <div class="bottom-bar">
+        <button class="btn exit-btn" onclick="exitApp()">
+            Exit
+        </button>
+
+        <div
+            style="font-size: 80px; color: #ffffff; text-align: center; max-width: 65%; align-self: center; line-height: 1.3; font-weight: 600; text-shadow: 3px 3px 6px rgba(0,0,0,0.6); margin-bottom: 120px;">
+            Project starts from welcome page having project title "if the clicks on 'proceed' button, user will be
+            directed to info-menu page where the user can see different button for information of project."
+        </div>
+
+        <a href="/abstract" class="btn proceed-btn">
+            Proceed to next page
+        </a>
+    </div>
+
+    <script>
+        function exitApp() {
+            if (confirm("Are you sure you want to close the application?")) {
+                fetch('/shutdown', { method: 'POST' })
+                    .then(() => {
+                        window.close();
+                        document.body.innerHTML = `
+                        <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                            <h1 style="font-size: 40px; margin-bottom: 20px;">Application Stopped</h1>
+                            <p style="font-size: 20px;">The server has been shut down safely. You may now close this browser tab.</p>
+                        </div>
+                    `;
+                    }).catch(err => {
+                        window.close();
+                        document.body.innerHTML = "<h1 style='text-align:center; margin-top: 20%'>You can close this tab now.</h1>";
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>

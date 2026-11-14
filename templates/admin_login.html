@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            zoom: 1.5;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .login-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 1100px;
+            background: #172554;
+            padding: 100px;
+            border-radius: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+            text-align: center;
+            border: 2px solid #2563eb;
+        }
+
+        .login-box h1 {
+            color: white;
+            margin: 0 0 20px;
+            font-size: 100px;
+            font-weight: 800;
+        }
+
+        .login-box p {
+            color: #cbd5e1;
+            font-size: 40px;
+            margin-bottom: 60px;
+            line-height: 1.4;
+        }
+
+        .error {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            color: white;
+            margin-bottom: 20px;
+            margin-top: 40px;
+            font-size: 45px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 35px;
+            border: none;
+            border-radius: 20px;
+            font-size: 45px;
+            background: #eff6ff;
+            color: #0f172a;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 60px;
+            padding: 40px;
+            border: none;
+            border-radius: 20px;
+            background: #2563eb;
+            color: white;
+            font-size: 55px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-5px);
+        }
+
+        @media screen and (max-width:768px) {
+            body {
+                padding: 16px;
+                align-items: center;
+            }
+
+            .login-box {
+                max-width: 100%;
+                padding: 28px;
+                border-radius: 22px;
+            }
+
+            .login-box h1 {
+                font-size: 36px;
+            }
+
+            .login-box p {
+                font-size: 18px;
+            }
+
+            label {
+                font-size: 20px;
+            }
+
+            input {
+                font-size: 19px;
+                padding: 16px;
+            }
+
+            button {
+                font-size: 22px;
+                padding: 16px;
+            }
+
+            .error {
+                font-size: 17px;
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            padding: 30px 60px;
+            font-size: 50px;
+            font-weight: bold;
+            background: #ef4444;
+            color: white;
+            border-radius: 60px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #dc2626;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Admin Login</h1>
+
+        <p>Login to manage users, songs and AI features.</p>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label>Admin Username</label>
+            <input type="text" name="username" placeholder="Enter admin username" required>
+
+            <label>Admin Password</label>
+            <input type="password" name="password" placeholder="Enter admin password" required>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+    </div>
+
+    <a href="/start" class="back-btn">Previous Page</a>
+
+</body>
+
+</html>

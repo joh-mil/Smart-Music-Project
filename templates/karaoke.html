@@ -1,0 +1,1345 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Karaoke Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e0f2fe;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 96%;
+            max-width: 1500px;
+            margin: 30px auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .top-bar h1 {
+            color: #1e3a8a;
+            margin: 0;
+            font-size: 52px;
+            font-weight: 900;
+        }
+
+        .back-btn {
+            background: #2563eb;
+            color: white;
+            padding: 18px 28px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+        }
+
+        .card {
+            background: white;
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+            border: 1px solid #bfdbfe;
+            margin-bottom: 25px;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            color: white;
+            padding: 35px;
+            border-radius: 32px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        .banner h2 {
+            color: white;
+            margin: 0 0 15px;
+            font-size: 48px;
+            font-weight: 900;
+        }
+
+        .banner p {
+            margin: 0;
+            color: #eff6ff;
+            font-size: 24px;
+            line-height: 1.4;
+        }
+
+        .song-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .detail-box {
+            background: #eff6ff;
+            padding: 25px;
+            border-radius: 20px;
+            border: 3px solid #bfdbfe;
+            font-size: 28px;
+            word-break: break-word;
+            font-weight: 900;
+        }
+
+        .detail-box span {
+            color: #64748b;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 17px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        audio {
+            width: 100%;
+            height: 60px;
+            margin-top: 25px;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            margin-top: 0;
+            font-size: 38px;
+            font-weight: 900;
+        }
+
+        .section {
+            margin-top: 50px;
+            border-top: 3px solid #bfdbfe;
+            padding-top: 40px;
+        }
+
+        .btn {
+            padding: 20px 34px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 900;
+            color: white;
+            margin: 14px 14px 14px 0;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 25px;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .green { background: #16a34a; }
+        .blue { background: #2563eb; }
+        .red { background: #dc2626; }
+
+        .duration-box {
+            background: #dbeafe;
+            color: #1e3a8a;
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 900;
+            margin-top: 18px;
+            font-size: 25px;
+            border: 2px solid #93c5fd;
+        }
+
+        .note {
+            background: #eff6ff;
+            border: 2px solid #38bdf8;
+            color: #1e3a8a;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: none;
+            color: #2563eb;
+            font-weight: 900;
+            margin-top: 25px;
+            font-size: 26px;
+            text-align: center;
+            padding: 18px;
+            background: #eff6ff;
+            border-radius: 15px;
+            border: 2px dashed #2563eb;
+        }
+
+        /* Professional trimmer */
+        .pro-trimmer {
+            background: #d1d5db;
+            padding: 22px;
+            border-radius: 18px;
+            margin-top: 25px;
+        }
+
+        .wave-box {
+            display: flex;
+            align-items: center;
+            background: #3730a3;
+            border-radius: 48px;
+            padding: 12px;
+        }
+
+        .trim-arrow {
+            width: 60px;
+            height: 115px;
+            border: none;
+            background: #3730a3;
+            color: white;
+            font-size: 34px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .wave-area {
+            position: relative;
+            flex: 1;
+            height: 125px;
+            background: #c7c7c7;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+
+        .bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            padding: 0 10px;
+        }
+
+        .bars span {
+            width: 8px;
+            height: 90px;
+            background: #4f63c6;
+            border-radius: 8px;
+        }
+
+        .selection-range {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: rgba(37, 99, 235, 0.22);
+            border-left: 8px solid #16a34a;
+            border-right: 8px solid #dc2626;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .play-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: red;
+            left: 0%;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .handle-label {
+            position: absolute;
+            top: 8px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            color: white;
+            font-size: 12px;
+            font-weight: 900;
+            z-index: 20;
+            pointer-events: none;
+            transform: translateX(-50%);
+            transition: all 0.2s ease;
+        }
+
+        .start-handle-label { background: #16a34a; }
+        .end-handle-label { background: #dc2626; }
+
+        .wave-area input[type=range] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            appearance: none;
+            background: none;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.7;
+        }
+
+        .wave-area input[type=range]::-webkit-slider-thumb {
+            appearance: none;
+            width: 34px;
+            height: 105px;
+            border-radius: 12px;
+            border: 4px solid white;
+            cursor: pointer;
+            pointer-events: auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        #start_time::-webkit-slider-thumb { background: #16a34a; }
+        #end_time::-webkit-slider-thumb { background: #dc2626; }
+
+        .trim-times {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 25px;
+            font-weight: 900;
+            margin-top: 18px;
+            color: #1f2937;
+            gap: 12px;
+        }
+
+        .trim-times span {
+            white-space: nowrap;
+        }
+
+        .success-section {
+            display: none;
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .final-section {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .lyrics-container {
+            background: #011182;
+            border-radius: 20px;
+            padding: 35px 25px;
+            height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            text-align: center;
+            border: 5px solid #1e3a8a;
+            box-shadow: inset 0 0 35px rgba(0,0,0,0.8);
+            scroll-behavior: smooth;
+        }
+
+        .lyrics-scroll {
+            padding: 20px 0;
+            width: 100%;
+        }
+
+
+
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: white;
+            width: 700px;
+            max-width: 95%;
+            padding: 35px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+            position: relative;
+        }
+
+        .modal-box h2 {
+            font-size: 36px;
+            color: #1e3a8a;
+            margin-top: 0;
+        }
+
+        .modal-box p {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 28px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .emoji-row {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .emoji-row button {
+            font-size: 42px;
+            border: none;
+            background: #eff6ff;
+            border-radius: 18px;
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .stars {
+            font-size: 55px;
+            color: #facc15;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+
+        .modal-box textarea {
+            width: 100%;
+            height: 150px;
+            resize: none;
+            border-radius: 18px;
+            border: 3px solid #93c5fd;
+            padding: 20px;
+            font-size: 22px;
+        }
+
+        .submit-feedback {
+            width: 100%;
+            margin-top: 25px;
+            padding: 20px;
+            border: none;
+            border-radius: 18px;
+            background: #2563eb;
+            color: white;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 96%;
+                margin: 10px auto;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .top-bar h1 {
+                font-size: 32px;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                font-size: 18px;
+                padding: 14px;
+            }
+
+            .banner {
+                padding: 18px;
+            }
+
+            .banner h2 {
+                font-size: 26px;
+            }
+
+            .banner p {
+                font-size: 17px;
+            }
+
+            .song-details {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-box {
+                font-size: 22px;
+                padding: 16px;
+            }
+
+            .detail-box span {
+                font-size: 15px;
+            }
+
+            h2 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 14px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+                font-size: 18px;
+                padding: 14px;
+                margin: 8px 0;
+            }
+
+            audio {
+                height: 45px;
+            }
+
+            .pro-trimmer {
+                padding: 10px;
+            }
+
+            .trim-arrow {
+                width: 35px;
+                height: 85px;
+                font-size: 20px;
+            }
+
+            .wave-area {
+                height: 90px;
+            }
+
+            .bars span {
+                width: 4px;
+                height: 60px;
+            }
+
+            .wave-area input[type=range]::-webkit-slider-thumb {
+                width: 22px;
+                height: 75px;
+            }
+
+            .trim-times {
+                font-size: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .duration-box {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .lyrics-container {
+                height: 330px;
+                padding: 18px 10px;
+            }
+
+            .lyric-line {
+                font-size: 22px;
+            }
+
+            .lyric-line.active {
+                font-size: 28px;
+            }
+        }
+
+        .bgm-result-box{
+    background:#dcfce7;
+    border:3px solid #22c55e;
+    border-radius:22px;
+    padding:30px;
+    margin-top:35px;
+    box-shadow:0 12px 30px rgba(34,197,94,0.25);
+}
+
+.bgm-result-box h2{
+    color:#15803d;
+    font-size:36px;
+    margin:0 0 15px;
+    font-weight:900;
+}
+
+.bgm-result-box p{
+    color:#14532d;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.bgm-result-box audio{
+    width:100%;
+    margin-top:15px;
+}
+
+.bgm-actions{
+    margin-top:20px;
+}
+
+.lyric-line{
+    color:white;
+    font-size:34px;
+    font-weight:800;
+    margin:24px 0;
+    text-align:center;
+    opacity:1;
+    transition:0.3s;
+}
+
+.active-line{
+    color:#22c55e;
+    transform:scale(1.08);
+    opacity:1;
+}
+
+
+
+.active-line{
+    color:#22c55e;
+    opacity:1;
+    transform:scale(1.08);
+}
+
+.lyric-line.active{
+    color:#22c55e !important;
+    font-size:48px !important;
+    font-weight:900;
+    opacity:1 !important;
+    text-shadow:0 0 25px rgba(34,197,94,1);
+    transform:scale(1.12);
+    transition:all 0.25s ease;
+    background:rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:12px;
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <h1>🎤 Karaoke Studio</h1>
+        <a href="/home" class="back-btn">⬅ Back to Home</a>
+    </div>
+
+    <div class="card">
+        <div class="banner">
+            <h2>{{ song.song_name }}</h2>
+            <p>Trim a part, generate BGM + lyrics, and record your karaoke performance.</p>
+        </div>
+
+        <div class="song-details">
+            <div class="detail-box"><span>Singer</span>{{ song.singer }}</div>
+            <div class="detail-box"><span>Language</span>{{ song.language }}</div>
+            <div class="detail-box"><span>Genre</span>{{ song.genre }}</div>
+            <div class="detail-box"><span>Mood</span>{{ song.mood }}</div>
+        </div>
+
+        <audio id="mainSong" controls>
+            <source src="/static/songs/{{ song.filename }}">
+        </audio>
+
+        <div class="section">
+            <h2>Generate BGM / Karaoke Track</h2>
+
+            <form action="/prepare_karaoke/{{ song.filename }}" method="POST" onsubmit="showBgmLoading()">
+                <div class="pro-trimmer">
+                    <div class="wave-box">
+                        <button type="button" class="trim-arrow" onclick="decreaseStart()">◀</button>
+
+                        <div class="wave-area">
+                            <div class="bars">
+                                {% for i in range(35) %}
+                                <span></span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="selection-range" id="selectionRange"></div>
+                            <div class="play-line" id="playLine"></div>
+
+                            <div class="handle-label start-handle-label" id="startHandleLabel">START</div>
+                            <div class="handle-label end-handle-label" id="endHandleLabel">END</div>
+
+                            <input type="range" id="start_time" name="start_time" min="0" max="300" value="0" oninput="updateDuration(event)">
+                            <input type="range" id="end_time" name="end_time" min="1" max="300" value="30" oninput="updateDuration(event)">
+                        </div>
+
+                        <button type="button" class="trim-arrow" onclick="increaseEnd()">▶</button>
+                    </div>
+
+                    <div class="trim-times">
+                        <span id="startText">00:00</span>
+                        <span id="durationText">00:00 → 00:30 | Duration: 30s</span>
+                        <span id="endText">00:30</span>
+                    </div>
+                </div>
+
+                <div class="duration-box" id="durationBox">
+                    Start: 00:00 | End: 00:30 | Selected Duration: 30 seconds
+                </div>
+
+                <button type="button" class="btn blue" onclick="previewClip()">▶ Preview</button>
+                <button type="button" class="btn red" onclick="stopPreview()">■ Stop</button>
+                <button type="submit" class="btn green">
+    🎵 Generate Karaoke
+</button>
+
+                <div id="bgmLoading" class="loading">
+                    Generating BGM + AI Lyrics... Please wait 🎼
+                </div>
+            </form>
+        </div>
+
+
+   {% if request.args.get('bgm_file') %}
+<div class="bgm-result-box" id="bgmSuccessSection">
+
+    <h2>✅ BGM Generated Successfully!</h2>
+
+    <p>You can now preview the generated background music.</p>
+
+    <audio id="bgmPlayer" controls>
+        <source id="bgmSource"
+                src="/static/generated/bgm/{{ request.args.get('bgm_file') }}">
+    </audio>
+
+    <div id="realTimeDisplay"
+     style="font-size:24px;
+            font-weight:900;
+            color:#14532d;
+            margin-top:10px;">
+    Current Song Time: 0s
+</div>
+
+    <div class="bgm-actions">
+
+        <button type="button"
+                class="btn blue"
+                onclick="playBgm()">
+            ▶ Play BGM
+        </button>
+
+        <button type="button"
+                class="btn red"
+                onclick="pauseBgm()">
+            ■ Pause
+        </button>
+
+        <a id="bgmDownload"
+           href="/download_generated/bgm/{{ request.args.get('bgm_file') }}"
+           download
+           class="btn green">
+            📥 Download BGM
+        </a>
+
+    </div>
+
+</div>
+{% endif %}
+
+        {% if song.language.lower() == "english" %}
+<div class="section"
+     id="vocalsSection"
+     style="display:none;
+            background:#fff7ed;
+            border:2px solid #fb923c;
+            border-radius:20px;
+            padding:25px;
+            margin-top:30px;">
+
+    <h2 style="color:#c2410c;">
+        🎤 Preview Separated Vocals
+    </h2>
+
+    <p style="font-size:22px;">
+        Listen to vocals clearly before generating AI lyrics.
+    </p>
+
+    <audio id="vocalsPlayer"
+           controls
+           style="width:100%; margin-top:20px;">
+        <source id="vocalsSource" src="">
+    </audio>
+
+    <form id="aiLyricsForm" method="POST" action="">
+        <button type="submit"
+                class="btn blue"
+                style="margin-top:20px;">
+            📝 Generate AI Lyrics From Vocals
+        </button>
+    </form>
+
+</div>
+{% endif %}
+
+
+        <div class="section">
+            <h2>🎤 Start Karaoke Performance</h2>
+
+            <div class="note">
+                First generate BGM + AI Lyrics. Then click Start Performance. Recording starts with BGM and stops automatically when BGM ends.
+            </div>
+
+            <button type="button" class="btn blue" onclick="startPerformance()">
+                🎤 Start Performance
+            </button>
+        </div>
+
+        <div class="section" id="finalOutputSection"
+     style="display:none;
+            background:#f0fdf4;
+            border:2px solid #22c55e;
+            border-radius:20px;
+            padding:25px;
+            margin-top:30px;">
+
+    <h2 style="color:#15803d;">
+        🎧 Voice + BGM Output
+    </h2>
+
+    <p style="font-size:22px;">
+        Your karaoke performance is ready.
+    </p>
+
+    <audio id="finalOutputPlayer"
+           controls
+           style="width:100%; margin-top:20px;">
+        <source id="finalOutputSource" src="">
+    </audio>
+
+    <div style="margin-top:25px;">
+
+        <a id="finalDownload"
+           href=""
+           download
+           class="btn green">
+            📥 Download
+        </a>
+
+        <button type="button"
+                class="btn red"
+                onclick="deleteFinalOutput()">
+            🗑 Delete
+        </button>
+
+    </div>
+
+</div>
+
+<div class="section">
+    <h2>Lyrics</h2>
+
+    {% if song.get("lyrics") %}
+        <p style="color:#16a34a; font-size:18px; font-weight:900;">
+            ✅ Lyrics loaded — lyrics will sync with generated BGM.
+        </p>
+    {% else %}
+        <p style="color:#dc2626; font-size:18px; font-weight:900;">
+            ❌ Lyrics not available for this song.
+        </p>
+    {% endif %}
+
+    <div class="lyrics-container" id="lyricsContainer">
+        <div class="lyrics-scroll" id="lyricsScroll">
+
+            {% if song.get("lyrics") %}
+
+                {% for line in song.get("lyrics","").splitlines() %}
+                    {% set clean = line.strip() %}
+
+                    {% if clean %}
+
+                        {% if "|" in clean %}
+                            {% set parts = clean.split("|", 1) %}
+
+                            <p class="lyric-line" data-time="{{ parts[0] }}">
+                                {{ parts[1] }}
+                            </p>
+                        {% else %}
+                            <p class="lyric-line">
+                                {{ clean }}
+                            </p>
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+
+                <p class="lyric-line">
+                    Lyrics not available for this song.
+                </p>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div id="feedbackModal" class="modal-overlay">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeFeedback()">×</button>
+
+        <h2>How was Karaoke Studio? ⭐</h2>
+        <p>Please rate your karaoke experience.</p>
+
+        <form action="/feedback" method="POST">
+            <div class="emoji-row">
+                <button type="button" onclick="selectEmoji('😍 Cool')">😍</button>
+                <button type="button" onclick="selectEmoji('😊 Good')">😊</button>
+                <button type="button" onclick="selectEmoji('😐 Average')">😐</button>
+                <button type="button" onclick="selectEmoji('😞 Bad')">😞</button>
+            </div>
+
+            <div class="stars">
+                <span onclick="selectStars(1)">★</span>
+                <span onclick="selectStars(2)">★</span>
+                <span onclick="selectStars(3)">★</span>
+                <span onclick="selectStars(4)">★</span>
+                <span onclick="selectStars(5)">★</span>
+            </div>
+
+            <textarea id="feedbackMessage" name="message" placeholder="Write your suggestion..." required></textarea>
+
+            <button type="submit" class="submit-feedback">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let mediaRecorder = null;
+let recordedChunks = [];
+let previewTimer = null;
+let lyricTimer = null;
+window.finalOutputUrl = "";
+
+const mainSong = document.getElementById("mainSong");
+let bgmPlayer = document.getElementById("bgmPlayer");
+const startInput = document.getElementById("start_time");
+const endInput = document.getElementById("end_time");
+
+function showBgmLoading() {
+    const loader = document.getElementById("bgmLoading");
+    if (loader) {
+        loader.style.display = "block";
+    }
+}
+
+function formatTime(sec) {
+    sec = Math.max(0, Math.floor(Number(sec) || 0));
+    const mins = Math.floor(sec / 60);
+    const secs = sec % 60;
+    return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+}
+
+function updateDuration(event) {
+    let start = Number(startInput.value);
+    let end = Number(endInput.value);
+    const total = Number(endInput.max) || 300;
+
+    if (start < 0) start = 0;
+    if (end > total) end = total;
+
+    if (start >= end) {
+        if (event && event.target && event.target.id === "start_time") {
+            start = end - 1;
+            startInput.value = start;
+        } else {
+            end = start + 1;
+            endInput.value = end;
+        }
+    }
+
+    const duration = end - start;
+
+    document.getElementById("startText").textContent = formatTime(start);
+    document.getElementById("endText").textContent = formatTime(end);
+    document.getElementById("durationText").textContent =
+        formatTime(start) + " → " + formatTime(end) + " | Duration: " + duration + "s";
+
+    document.getElementById("durationBox").textContent =
+        "Start: " + formatTime(start) +
+        " | End: " + formatTime(end) +
+        " | Selected Duration: " + duration + " seconds";
+
+    const left = (start / total) * 100;
+    const right = (end / total) * 100;
+    const width = Math.max(0, right - left);
+
+    const range = document.getElementById("selectionRange");
+    range.style.left = left + "%";
+    range.style.width = width + "%";
+
+    const startLabel = document.getElementById("startHandleLabel");
+    const endLabel = document.getElementById("endHandleLabel");
+
+    startLabel.style.left = Math.max(4, Math.min(left, 96)) + "%";
+    endLabel.style.left = Math.max(4, Math.min(right, 96)) + "%";
+
+    if (right - left < 12) {
+        endLabel.style.top = "38px";
+    } else {
+        endLabel.style.top = "8px";
+    }
+}
+
+function previewClip() {
+    const start = Number(startInput.value);
+    const end = Number(endInput.value);
+
+    if (end <= start) {
+        alert("End time must be greater than start time");
+        return;
+    }
+
+    clearInterval(previewTimer);
+    mainSong.pause();
+    mainSong.currentTime = start;
+    mainSong.play();
+
+    previewTimer = setInterval(function () {
+        const percent = ((mainSong.currentTime - start) / (end - start)) * 100;
+        document.getElementById("playLine").style.left = Math.max(0, Math.min(percent, 100)) + "%";
+
+        if (mainSong.currentTime >= end) {
+            stopPreview();
+        }
+    }, 100);
+}
+
+function stopPreview() {
+    mainSong.pause();
+    clearInterval(previewTimer);
+    previewTimer = null;
+}
+
+function decreaseStart() {
+    startInput.value = Math.max(0, Number(startInput.value) - 1);
+    updateDuration({ target: startInput });
+}
+
+function increaseEnd() {
+    const max = Number(endInput.max) || 300;
+    endInput.value = Math.min(max, Number(endInput.value) + 1);
+    updateDuration({ target: endInput });
+}
+
+mainSong.addEventListener("loadedmetadata", function () {
+    const total = Math.floor(mainSong.duration || 300);
+    startInput.max = Math.max(1, total - 1);
+    endInput.max = Math.max(2, total);
+
+    if (Number(endInput.value) > total) {
+        endInput.value = Math.min(30, total);
+    }
+
+    updateDuration();
+});
+
+window.addEventListener("load", function () {
+    startInput.value = 0;
+    endInput.value = 30;
+    updateDuration();
+});
+
+
+
+
+
+function playBgm() {
+
+    bgmPlayer = document.getElementById("bgmPlayer");
+
+    if (!bgmPlayer) {
+        alert("Generate BGM first");
+        return;
+    }
+
+    bgmPlayer.currentTime = 0;
+
+    bgmPlayer.play();
+
+    startLyricsSync();
+}
+
+function pauseBgm() {
+
+    bgmPlayer = document.getElementById("bgmPlayer");
+
+    if (bgmPlayer) {
+        bgmPlayer.pause();
+    }
+}
+
+function startLyricsSync() {
+
+    clearInterval(lyricTimer);
+
+    bgmPlayer = document.getElementById("bgmPlayer");
+
+    const lines = Array.from(
+        document.querySelectorAll(".lyric-line")
+    ).filter(line => line.dataset.time);
+    console.log("LYRIC LINES FOUND:", lines.length);
+lines.forEach(line => {
+    console.log(line.dataset.time, line.textContent);
+});
+
+    lyricTimer = setInterval(function () {
+
+        const current = bgmPlayer.currentTime;
+
+        let activeLine = null;
+
+        for (let i = 0; i < lines.length; i++) {
+
+            const lineTime =
+                parseFloat(lines[i].dataset.time);
+
+            const nextLineTime =
+                i + 1 < lines.length
+                ? parseFloat(lines[i + 1].dataset.time)
+                : Infinity;
+
+            if (
+                current >= lineTime &&
+                current < nextLineTime
+            ) {
+                activeLine = lines[i];
+                break;
+            }
+        }
+
+        lines.forEach(line => {
+            line.classList.remove("active");
+        });
+
+        if (activeLine) {
+
+            activeLine.classList.add("active");
+
+            activeLine.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+    }, 100);
+}
+
+async function startPerformance() {
+
+    const bgmFile = new URLSearchParams(window.location.search).get("bgm_file");
+
+    if (!bgmFile) {
+        alert("First generate BGM + AI Lyrics.");
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = function(event) {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            stream.getTracks().forEach(track => track.stop());
+
+            const blob = new Blob(recordedChunks, { type: "audio/webm" });
+            const formData = new FormData();
+
+            formData.append("recording", blob, "recording.webm");
+            formData.append("song", bgmFile);
+
+            fetch("/save_recording", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+
+                if (data.file_url) {
+                    showFinalOutput(data.file_url);
+                }
+            })
+            .catch(error => {
+                alert("Final output saving failed.");
+                console.log(error);
+            });
+        };
+
+        bgmPlayer.currentTime = 0;
+        bgmPlayer.play();
+
+        startLyricsSync();
+
+        mediaRecorder.start();
+
+        bgmPlayer.onended = function() {
+            if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                mediaRecorder.stop();
+            }
+        };
+
+        alert("Performance Started 🎤");
+
+    } catch (error) {
+        alert("Please allow microphone permission.");
+        console.log(error);
+    }
+}
+
+
+
+function openFeedback() {
+    document.getElementById("feedbackModal").style.display = "flex";
+}
+
+function closeFeedback() {
+    document.getElementById("feedbackModal").style.display = "none";
+}
+
+function selectEmoji(text) {
+    document.getElementById("feedbackMessage").value = text + " ";
+}
+
+function selectStars(num) {
+    document.getElementById("feedbackMessage").value += " " + num + " Stars ";
+}
+
+function showFinalOutput(fileUrl) {
+
+    window.finalOutputUrl = fileUrl;
+
+    document.getElementById("finalOutputSource").src = fileUrl;
+
+    document.getElementById("finalDownload").href = fileUrl;
+
+    document.getElementById("finalOutputPlayer").load();
+
+    document.getElementById("finalOutputSection").style.display = "block";
+
+    document.getElementById("finalOutputSection")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+function deleteFinalOutput() {
+
+    if (!window.finalOutputUrl) {
+        alert("No output found");
+        return;
+    }
+
+    const filename =
+        window.finalOutputUrl.split("/").pop();
+
+    fetch("/delete_final_karaoke/" + filename)
+        .then(response => response.text())
+        .then(message => {
+
+            alert(message);
+
+            document.getElementById("finalOutputPlayer").pause();
+
+            document.getElementById("finalOutputSource").src = "";
+
+            document.getElementById("finalOutputPlayer").load();
+
+            document.getElementById("finalOutputSection").style.display = "none";
+
+            window.finalOutputUrl = "";
+        });
+}
+
+const vocalsFileForLyrics = new URLSearchParams(window.location.search).get("vocals_file");
+
+if (vocalsFileForLyrics) {
+    const form = document.getElementById("aiLyricsForm");
+
+    if (form) {
+        form.action =
+            "/ai_transcribe_vocals/" +
+            encodeURIComponent(vocalsFileForLyrics) +
+            "?song={{ song.filename }}";
+    }
+}
+
+window.addEventListener("load", function () {
+    bgmPlayer = document.getElementById("bgmPlayer");
+
+    if (bgmPlayer) {
+        bgmPlayer.addEventListener("play", function () {
+            startLyricsSync();
+        });
+
+        bgmPlayer.addEventListener("pause", function () {
+            clearInterval(lyricTimer);
+        });
+
+        bgmPlayer.addEventListener("ended", function () {
+            clearInterval(lyricTimer);
+        });
+    }
+});
+
+const previewStart =
+    Number(new URLSearchParams(window.location.search).get("start")) || 0;
+
+setInterval(function () {
+
+    const bgmPlayer =
+        document.getElementById("bgmPlayer");
+
+    if (!bgmPlayer) return;
+
+    const realTime =
+        bgmPlayer.currentTime + previewStart;
+
+    document.getElementById("realTimeDisplay")
+        .innerText =
+        "Current Song Time: " +
+        realTime.toFixed(1) + "s";
+
+}, 100);
+
+</script>
+
+</body>
+</html>

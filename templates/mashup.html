@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Mashup Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e0f2fe;
+            color: #0f172a;
+            zoom: 1.15;
+        }
+
+        .container {
+            width: 98%;
+            max-width: 1800px;
+            margin: 30px auto;
+            min-height: 100vh;
+            font-size: 32px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .top-bar h1 {
+            color: #1e3a8a;
+            margin: 0;
+            font-size: 58px;
+            font-weight: 900;
+        }
+
+        .back-btn {
+            background: #2563eb;
+            color: white;
+            padding: 25px 45px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 42px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+            border: 1px solid #bfdbfe;
+        }
+
+        h2, h3 {
+            color: #1e3a8a;
+            margin-top: 0;
+            font-weight: 900;
+        }
+
+        .studio-banner {
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            color: white;
+            padding: 45px;
+            border-radius: 30px;
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 32px;
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.2);
+        }
+
+        .studio-banner h2 {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 62px;
+            font-weight: 900;
+        }
+
+        .studio-banner p {
+            margin: 0;
+            color: #eff6ff;
+            line-height: 1.5;
+        }
+
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            gap: 8px;
+            height: 60px;
+            margin: 25px 0 0;
+        }
+
+        .equalizer span {
+            width: 10px;
+            background: #38bdf8;
+            border-radius: 10px;
+            animation: bounce 1s infinite ease-in-out;
+        }
+
+        .equalizer span:nth-child(1) { height: 22px; animation-delay: 0s; }
+        .equalizer span:nth-child(2) { height: 40px; animation-delay: 0.1s; }
+        .equalizer span:nth-child(3) { height: 58px; animation-delay: 0.2s; }
+        .equalizer span:nth-child(4) { height: 35px; animation-delay: 0.3s; }
+        .equalizer span:nth-child(5) { height: 50px; animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(0.45); }
+            50% { transform: scaleY(1); }
+        }
+
+        .step-card {
+            background: #eff6ff;
+            border: 3px solid #bfdbfe;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: #2563eb;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .step-title h2 {
+            margin: 0;
+            font-size: 42px;
+        }
+
+        label {
+            display: block;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 34px;
+            color: #334155;
+            font-weight: 900;
+        }
+
+        select {
+            width: 100%;
+            padding: 20px;
+            border: 3px solid #93c5fd;
+            border-radius: 18px;
+            background: white;
+            color: #0f172a;
+            box-sizing: border-box;
+            font-size: 30px;
+            height: 95px;
+            font-weight: 700;
+        }
+
+        audio {
+            width: 100%;
+            height: 110px;
+            margin-top: 25px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            zoom: 1.35;
+        }
+
+        .song-info-box {
+            background: white;
+            border: 2px solid #93c5fd;
+            border-radius: 18px;
+            padding: 22px;
+            margin-top: 20px;
+            font-size: 28px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .song-info-box b {
+            color: #1e3a8a;
+        }
+
+        .mode-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .mode-option {
+            background: white;
+            border: 4px solid #bfdbfe;
+            border-radius: 25px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .mode-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+        }
+
+        .mode-option.active {
+            border-color: #2563eb;
+            background: #dbeafe;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        .mode-option h3 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .mode-option p {
+            font-size: 24px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .recommendation-area {
+            display: block;
+            margin-top: 25px;
+        }
+
+        .custom-area {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .recommend-card {
+            background: white;
+            border: 3px solid #bfdbfe;
+            border-radius: 22px;
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .recommend-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+        }
+
+        .recommend-card.active {
+            border-color: #16a34a;
+            background: #dcfce7;
+            box-shadow: 0 10px 25px rgba(22, 163, 74, 0.25);
+        }
+
+        .recommend-card h3 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .recommend-card p {
+            font-size: 22px;
+            margin: 6px 0;
+            color: #475569;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e3a8a;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .no-recommend {
+            background: #fff7ed;
+            color: #9a3412;
+            border: 2px solid #fdba74;
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .ready-box {
+            background: #dcfce7;
+            color: #14532d;
+            border: 3px solid #22c55e;
+            border-radius: 22px;
+            padding: 25px;
+            margin-top: 25px;
+            font-size: 28px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .mashup-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .type-card {
+            background: white;
+            border: 4px solid #bfdbfe;
+            border-radius: 25px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .type-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+        }
+
+        .type-card.active {
+            border-color: #9333ea;
+            background: #f3e8ff;
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.25);
+        }
+
+        .type-card h3 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .type-card p {
+            font-size: 22px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .hidden-inputs {
+            display: none;
+        }
+
+        .btn {
+            padding: 38px 60px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: white;
+            font-weight: 900;
+            margin-top: 35px;
+            width: 100%;
+            font-size: 54px;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(22, 163, 74, 0.4);
+        }
+
+        .green {
+            background: #16a34a;
+        }
+
+        .green:hover {
+            background: #15803d;
+            transform: translateY(-2px);
+        }
+
+        .compatibility {
+            background: #eff6ff;
+            border-left: 8px solid #2563eb;
+            padding: 25px;
+            border-radius: 18px;
+            margin-top: 30px;
+            font-size: 28px;
+            line-height: 1.6;
+        }
+
+        .result-box {
+            background: #f8fafc;
+            border-radius: 22px;
+            padding: 28px;
+            margin-top: 30px;
+            border: 2px solid #bfdbfe;
+            font-size: 28px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            background: #16a34a;
+            color: white;
+            padding: 18px 26px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        .delete-btn {
+            display: inline-block;
+            margin-top: 15px;
+            background: #dc2626;
+            color: white;
+            padding: 18px 26px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 25px;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 25px;
+            text-align: center;
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 30px;
+            background: #eff6ff;
+            border: 2px dashed #2563eb;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: white;
+            width: 1000px;
+            max-width: 95%;
+            padding: 60px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+            position: relative;
+        }
+
+        .modal-box h2 {
+            margin-top: 0;
+            color: #1e3a8a;
+            font-size: 65px;
+            font-weight: 900;
+        }
+
+        .modal-box p {
+            color: #475569;
+            font-size: 40px;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            font-size: 45px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .emoji-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .emoji-row button {
+            font-size: 70px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 25px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stars {
+            font-size: 100px;
+            color: #facc15;
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+
+        .modal-box textarea {
+            width: 100%;
+            height: 250px;
+            resize: none;
+            border-radius: 25px;
+            border: 3px solid #93c5fd;
+            padding: 30px;
+            box-sizing: border-box;
+            font-size: 40px;
+        }
+
+        .submit-feedback {
+            width: 100%;
+            margin-top: 40px;
+            padding: 35px;
+            border: none;
+            border-radius: 25px;
+            background: #2563eb;
+            color: white;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 50px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                zoom: 1;
+                font-size: 18px;
+                overflow-x: hidden;
+            }
+
+            .container {
+                width: 96%;
+                margin: 10px auto;
+                font-size: 18px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .top-bar h1 {
+                font-size: 32px;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                font-size: 20px;
+                padding: 14px;
+                box-sizing: border-box;
+            }
+
+            .main-card {
+                padding: 15px;
+                border-radius: 18px;
+            }
+
+            .studio-banner {
+                padding: 18px;
+                font-size: 18px;
+            }
+
+            .studio-banner h2 {
+                font-size: 26px;
+            }
+
+            .studio-banner p {
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+            .step-card {
+                padding: 16px;
+                border-radius: 18px;
+            }
+
+            .step-number {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+            }
+
+            .step-title h2 {
+                font-size: 24px;
+            }
+
+            label {
+                font-size: 20px;
+                margin-top: 18px;
+            }
+
+            select {
+                font-size: 17px;
+                padding: 12px;
+                height: 52px;
+            }
+
+            audio {
+                width: 100%;
+                height: 70px;
+                zoom: 1;
+            }
+
+            .song-info-box {
+                font-size: 16px;
+                padding: 14px;
+            }
+
+            .mode-box {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .mode-option {
+                padding: 16px;
+            }
+
+            .mode-option h3 {
+                font-size: 22px;
+            }
+
+            .mode-option p {
+                font-size: 16px;
+            }
+
+            .recommendation-grid,
+            .mashup-types {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .recommend-card,
+            .type-card {
+                padding: 16px;
+            }
+
+            .recommend-card h3,
+            .type-card h3 {
+                font-size: 21px;
+            }
+
+            .recommend-card p,
+            .type-card p {
+                font-size: 16px;
+            }
+
+            .tag {
+                font-size: 13px;
+            }
+
+            .ready-box {
+                font-size: 16px;
+                padding: 16px;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 22px;
+                padding: 16px;
+                margin-top: 18px;
+            }
+
+            .compatibility,
+            .result-box {
+                padding: 16px;
+                border-radius: 16px;
+                font-size: 17px;
+            }
+
+            .compatibility h2,
+            .result-box h2 {
+                font-size: 25px;
+            }
+
+            .download-btn,
+            .delete-btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                font-size: 18px;
+                padding: 14px;
+                margin-left: 0;
+                margin-top: 12px;
+                box-sizing: border-box;
+            }
+
+            .modal-box {
+                width: 92%;
+                padding: 18px;
+            }
+
+            .modal-box h2 {
+                font-size: 25px;
+            }
+
+            .modal-box p {
+                font-size: 18px;
+            }
+
+            .emoji-row button {
+                font-size: 28px;
+            }
+
+            .stars {
+                font-size: 32px;
+            }
+
+            .modal-box textarea {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h1>🎧 AI Mashup Studio</h1>
+        <a href="/home" class="back-btn">⬅ Back to Home</a>
+    </div>
+
+    <div class="main-card">
+
+        <div class="studio-banner">
+            <h2>Create Smart AI Mashups</h2>
+            <p>Select one song, get AI recommended matching songs, choose mashup type, and generate your final mashup.</p>
+
+            <div class="equalizer">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/mashup" onsubmit="return validateAndSubmit()">
+
+            <div class="step-card">
+                <div class="step-title">
+                    <span class="step-number">1</span>
+                    <h2>Select Song 1</h2>
+                </div>
+
+                <label>Choose your first song</label>
+                <select name="song1" id="song1Select" onchange="handleSong1Change()" required>
+                    {% for song in songs %}
+                    <option value="{{ song.filename }}"
+                            data-file="{{ song.filename }}"
+                            data-name="{{ song.song_name }}"
+                            data-singer="{{ song.singer }}"
+                            data-genre="{{ song.genre }}"
+                            data-mood="{{ song.mood }}">
+                        {{ song.song_name }} - {{ song.singer }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <audio id="song1Player" controls></audio>
+
+                <div class="song-info-box" id="song1Info">
+                    Select Song 1 to see details.
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-title">
+                    <span class="step-number">2</span>
+                    <h2>Choose Song 2</h2>
+                </div>
+
+                <div class="mode-box">
+                    <div class="mode-option active" id="aiModeBox" onclick="setMode('ai')">
+                        <h3>🤖 AI Recommended</h3>
+                        <p>System recommends songs using same singer, genre, or mood.</p>
+                    </div>
+
+                    <div class="mode-option" id="customModeBox" onclick="setMode('custom')">
+                        <h3>🎵 Custom Song 2</h3>
+                        <p>User can manually select any second song.</p>
+                    </div>
+                </div>
+
+                <input type="hidden" name="song2" id="selectedSong2Input" required>
+                <input type="hidden" name="selection_mode" id="selectionModeInput" value="ai">
+
+                <div class="recommendation-area" id="recommendationArea">
+                    <h3 style="font-size:36px; margin-top:30px;">Recommended Songs</h3>
+                    <p style="font-size:25px; color:#475569;">
+                        Select one song recommended by same singer, same genre, or same mood.
+                    </p>
+
+                    <div class="recommendation-grid" id="recommendationGrid"></div>
+
+                    <div class="no-recommend" id="noRecommendBox" style="display:none;">
+                        No strong recommendation found. Please use Custom Song 2 option.
+                    </div>
+                </div>
+
+                <div class="custom-area" id="customArea">
+                    <label>Choose custom Song 2</label>
+                    <select id="customSong2Select" onchange="selectCustomSong2()">
+                        {% for song in songs %}
+                        <option value="{{ song.filename }}"
+                                data-file="{{ song.filename }}"
+                                data-name="{{ song.song_name }}"
+                                data-singer="{{ song.singer }}"
+                                data-genre="{{ song.genre }}"
+                                data-mood="{{ song.mood }}">
+                            {{ song.song_name }} - {{ song.singer }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <audio id="song2Player" controls></audio>
+
+                <div class="ready-box" id="readyBox">
+                    Song 1 and Song 2 are ready for mashup.
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-title">
+                    <span class="step-number">3</span>
+                    <h2>Choose Mashup Type</h2>
+                </div>
+
+                <p style="font-size:25px; color:#475569; line-height:1.5;">
+                    Select how the final mashup should sound.
+                </p>
+
+                <input type="hidden" name="mashup_type" id="mashupTypeInput" value="smooth">
+
+                <div class="mashup-types">
+                    <div class="type-card active" onclick="selectMashupType('smooth', this)">
+                        <h3>🎧 Smooth Mashup</h3>
+                        <p>Soft YouTube-style transition with natural blending.</p>
+                    </div>
+
+                    <div class="type-card" onclick="selectMashupType('dj', this)">
+                        <h3>🎚 DJ Beat Mashup</h3>
+                        <p>Fast transition with beat and energetic feel.</p>
+                    </div>
+
+                    <div class="type-card" onclick="selectMashupType('romantic', this)">
+                        <h3>💖 Romantic Mashup</h3>
+                        <p>Soft fade and emotional flow for love songs.</p>
+                    </div>
+
+                    <div class="type-card" onclick="selectMashupType('party', this)">
+                        <h3>🔥 Party Mashup</h3>
+                        <p>High energy continuous flow for dance songs.</p>
+                    </div>
+
+                    <div class="type-card" onclick="selectMashupType('chill', this)">
+                        <h3>🌙 Chill Mashup</h3>
+                        <p>Slow calm transition with relaxed mood.</p>
+                    </div>
+
+                    <div class="type-card" onclick="selectMashupType('auto', this)">
+                        <h3>🤖 Auto AI Mashup</h3>
+                        <p>System automatically selects best transition style.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden-inputs">
+                <input type="hidden" name="start1" value="0">
+                <input type="hidden" name="start2" value="0">
+                <input type="hidden" name="song1_intro" id="song1IntroInput" value="12">
+                <input type="hidden" name="song1_ending" id="song1EndingInput" value="8">
+                <input type="hidden" name="song2_duration" id="song2DurationInput" value="12">
+                <input type="hidden" name="crossfade" id="crossfadeInput" value="2.5">
+            </div>
+
+            <button type="submit" class="btn green">
+                🎶 Generate AI Mashup
+            </button>
+
+            <div id="loadingText" class="loading">
+                Generating your AI mashup... Please wait 🎧
+            </div>
+
+        </form>
+
+        {% if compatibility %}
+        <div class="compatibility">
+            <h2>{{ compatibility.emoji }} Compatibility Score: {{ compatibility.score }}%</h2>
+            <p><b>Level:</b> {{ compatibility.level }}</p>
+            <p>{{ compatibility.reason }}</p>
+        </div>
+        {% endif %}
+
+        {% if result %}
+        <div class="result-box">
+
+            <h2>✅ Generated Mashup</h2>
+
+            <p><b>Name:</b> {{ result.mashup_name }}</p>
+            <p><b>Genre:</b> {{ result.predicted_genre }}</p>
+            <p><b>Mood:</b> {{ result.predicted_mood }}</p>
+
+            <audio controls>
+                <source src="/{{ result.output }}" type="audio/mp3">
+            </audio>
+
+            <div style="margin-top:15px;">
+
+                <a href="/{{ result.output }}"
+                   download
+                   class="download-btn">
+                   ⬇ Download Mashup
+                </a>
+
+                <a href="/delete_mashup?file={{ result.output }}"
+                   onclick="return confirm('Delete this mashup?')"
+                   class="delete-btn">
+                   🗑 Delete Mashup
+                </a>
+
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div id="feedbackModal" class="modal-overlay">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeFeedback()">×</button>
+
+        <h2>How was the AI Mashup? ⭐</h2>
+        <p>Please rate your mashup experience.</p>
+
+        <form action="/feedback" method="POST">
+            <div class="emoji-row">
+                <button type="button" onclick="selectEmoji('😍 Cool')">😍</button>
+                <button type="button" onclick="selectEmoji('😊 Good')">😊</button>
+                <button type="button" onclick="selectEmoji('😐 Average')">😐</button>
+                <button type="button" onclick="selectEmoji('😞 Bad')">😞</button>
+            </div>
+
+            <div class="stars">
+                <span onclick="selectStars(1)">★</span>
+                <span onclick="selectStars(2)">★</span>
+                <span onclick="selectStars(3)">★</span>
+                <span onclick="selectStars(4)">★</span>
+                <span onclick="selectStars(5)">★</span>
+            </div>
+
+            <textarea id="feedbackMessage" name="message" placeholder="Write your suggestion..." required></textarea>
+
+            <button type="submit" class="submit-feedback">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let selectedEmoji = "";
+let selectedRating = "";
+let currentMode = "ai";
+let selectedSong2 = "";
+const mashupCreated = "{{ 'yes' if result else 'no' }}";
+
+function getSongOptions(selectId) {
+    const select = document.getElementById(selectId);
+    return Array.from(select.options).map(option => {
+        return {
+            filename: option.value,
+            file: option.dataset.file || option.value,
+            name: option.dataset.name || "",
+            singer: option.dataset.singer || "",
+            genre: option.dataset.genre || "",
+            mood: option.dataset.mood || "",
+            text: option.textContent.trim()
+        };
+    });
+}
+
+function getSelectedSong1() {
+    const select = document.getElementById("song1Select");
+    const option = select.options[select.selectedIndex];
+
+    return {
+        filename: option.value,
+        file: option.dataset.file || option.value,
+        name: option.dataset.name || "",
+        singer: option.dataset.singer || "",
+        genre: option.dataset.genre || "",
+        mood: option.dataset.mood || "",
+        text: option.textContent.trim()
+    };
+}
+
+function setAudioSource(audioId, file) {
+    const audio = document.getElementById(audioId);
+
+    if (file) {
+        audio.src = "/static/songs/" + encodeURIComponent(file);
+        audio.load();
+    }
+}
+
+function handleSong1Change() {
+    const song1 = getSelectedSong1();
+
+    setAudioSource("song1Player", song1.file);
+
+    document.getElementById("song1Info").innerHTML =
+        "<b>Song:</b> " + song1.name + "<br>" +
+        "<b>Singer:</b> " + song1.singer + "<br>" +
+        "<b>Genre:</b> " + song1.genre + "<br>" +
+        "<b>Mood:</b> " + song1.mood;
+
+    selectedSong2 = "";
+    document.getElementById("selectedSong2Input").value = "";
+    document.getElementById("readyBox").style.display = "none";
+
+    if (currentMode === "ai") {
+        buildRecommendations();
+    } else {
+        selectCustomSong2();
+    }
+}
+
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById("selectionModeInput").value = mode;
+
+    document.getElementById("aiModeBox").classList.remove("active");
+    document.getElementById("customModeBox").classList.remove("active");
+
+    document.getElementById("recommendationArea").style.display = "none";
+    document.getElementById("customArea").style.display = "none";
+
+    selectedSong2 = "";
+    document.getElementById("selectedSong2Input").value = "";
+    document.getElementById("readyBox").style.display = "none";
+
+    if (mode === "ai") {
+        document.getElementById("aiModeBox").classList.add("active");
+        document.getElementById("recommendationArea").style.display = "block";
+        buildRecommendations();
+    } else {
+        document.getElementById("customModeBox").classList.add("active");
+        document.getElementById("customArea").style.display = "block";
+        selectCustomSong2();
+    }
+}
+
+function buildRecommendations() {
+    const song1 = getSelectedSong1();
+    const allSongs = getSongOptions("song1Select");
+    const grid = document.getElementById("recommendationGrid");
+    const noRecommendBox = document.getElementById("noRecommendBox");
+
+    grid.innerHTML = "";
+    noRecommendBox.style.display = "none";
+
+    let recommendations = [];
+
+    allSongs.forEach(song => {
+        if (song.filename === song1.filename) {
+            return;
+        }
+
+        let score = 0;
+        let reasons = [];
+
+        if (song.singer && song1.singer && song.singer.toLowerCase() === song1.singer.toLowerCase()) {
+            score += 3;
+            reasons.push("Same Singer");
+        }
+
+        if (song.genre && song1.genre && song.genre.toLowerCase() === song1.genre.toLowerCase()) {
+            score += 2;
+            reasons.push("Same Genre");
+        }
+
+        if (song.mood && song1.mood && song.mood.toLowerCase() === song1.mood.toLowerCase()) {
+            score += 2;
+            reasons.push("Same Mood");
+        }
+
+        if (score > 0) {
+            recommendations.push({
+                ...song,
+                score: score,
+                reasons: reasons
+            });
+        }
+    });
+
+    recommendations.sort((a, b) => b.score - a.score);
+    recommendations = recommendations.slice(0, 6);
+
+    if (recommendations.length === 0) {
+        noRecommendBox.style.display = "block";
+        return;
+    }
+
+    recommendations.forEach((song, index) => {
+        const card = document.createElement("div");
+        card.className = "recommend-card";
+        card.dataset.filename = song.filename;
+
+        let tagHtml = "";
+        song.reasons.forEach(reason => {
+            tagHtml += '<span class="tag">' + reason + '</span>';
+        });
+
+        card.innerHTML =
+            "<h3>" + song.name + "</h3>" +
+            "<p><b>Singer:</b> " + song.singer + "</p>" +
+            "<p><b>Genre:</b> " + song.genre + "</p>" +
+            "<p><b>Mood:</b> " + song.mood + "</p>" +
+            '<div class="tag-row">' + tagHtml + "</div>";
+
+        card.onclick = function() {
+            selectRecommendedSong(song.filename, song.file, card);
+        };
+
+        grid.appendChild(card);
+
+        if (index === 0) {
+            setTimeout(function() {
+                selectRecommendedSong(song.filename, song.file, card);
+            }, 100);
+        }
+    });
+}
+
+function selectRecommendedSong(filename, file, card) {
+    document.querySelectorAll(".recommend-card").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    card.classList.add("active");
+
+    selectedSong2 = filename;
+    document.getElementById("selectedSong2Input").value = filename;
+
+    setAudioSource("song2Player", file);
+    showReadyBox();
+}
+
+function selectCustomSong2() {
+    const song1 = getSelectedSong1();
+    const select = document.getElementById("customSong2Select");
+
+    if (!select || select.options.length === 0) {
+        return;
+    }
+
+    if (select.value === song1.filename && select.options.length > 1) {
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value !== song1.filename) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+    }
+
+    const option = select.options[select.selectedIndex];
+
+    selectedSong2 = option.value;
+    document.getElementById("selectedSong2Input").value = option.value;
+
+    setAudioSource("song2Player", option.dataset.file || option.value);
+    showReadyBox();
+}
+
+function showReadyBox() {
+    const song1 = getSelectedSong1();
+    const song2Value = document.getElementById("selectedSong2Input").value;
+
+    if (!song2Value) {
+        return;
+    }
+
+    const readyBox = document.getElementById("readyBox");
+    readyBox.style.display = "block";
+    readyBox.innerHTML =
+        "✅ <b>Song 1:</b> " + song1.text + "<br>" +
+        "✅ <b>Song 2:</b> " + getSong2Text(song2Value) + "<br>" +
+        "Now choose mashup type below.";
+}
+
+function getSong2Text(filename) {
+    const allSongs = getSongOptions("song1Select");
+
+    for (let i = 0; i < allSongs.length; i++) {
+        if (allSongs[i].filename === filename) {
+            return allSongs[i].text;
+        }
+    }
+
+    return filename;
+}
+
+function selectMashupType(type, element) {
+    document.getElementById("mashupTypeInput").value = type;
+
+    document.querySelectorAll(".type-card").forEach(card => {
+        card.classList.remove("active");
+    });
+
+    element.classList.add("active");
+
+    if (type === "smooth") {
+        document.getElementById("song1IntroInput").value = "12";
+        document.getElementById("song1EndingInput").value = "8";
+        document.getElementById("song2DurationInput").value = "12";
+        document.getElementById("crossfadeInput").value = "2.5";
+    }
+
+    if (type === "dj") {
+        document.getElementById("song1IntroInput").value = "8";
+        document.getElementById("song1EndingInput").value = "6";
+        document.getElementById("song2DurationInput").value = "14";
+        document.getElementById("crossfadeInput").value = "1.5";
+    }
+
+    if (type === "romantic") {
+        document.getElementById("song1IntroInput").value = "15";
+        document.getElementById("song1EndingInput").value = "10";
+        document.getElementById("song2DurationInput").value = "14";
+        document.getElementById("crossfadeInput").value = "4";
+    }
+
+    if (type === "party") {
+        document.getElementById("song1IntroInput").value = "8";
+        document.getElementById("song1EndingInput").value = "8";
+        document.getElementById("song2DurationInput").value = "16";
+        document.getElementById("crossfadeInput").value = "2";
+    }
+
+    if (type === "chill") {
+        document.getElementById("song1IntroInput").value = "14";
+        document.getElementById("song1EndingInput").value = "10";
+        document.getElementById("song2DurationInput").value = "12";
+        document.getElementById("crossfadeInput").value = "4.5";
+    }
+
+    if (type === "auto") {
+        const song1 = getSelectedSong1();
+
+        if (song1.mood.toLowerCase().includes("romantic") || song1.mood.toLowerCase().includes("calm")) {
+            document.getElementById("song1IntroInput").value = "15";
+            document.getElementById("song1EndingInput").value = "10";
+            document.getElementById("song2DurationInput").value = "14";
+            document.getElementById("crossfadeInput").value = "4";
+        } else if (song1.mood.toLowerCase().includes("energetic") || song1.mood.toLowerCase().includes("happy")) {
+            document.getElementById("song1IntroInput").value = "8";
+            document.getElementById("song1EndingInput").value = "8";
+            document.getElementById("song2DurationInput").value = "16";
+            document.getElementById("crossfadeInput").value = "2";
+        } else {
+            document.getElementById("song1IntroInput").value = "12";
+            document.getElementById("song1EndingInput").value = "8";
+            document.getElementById("song2DurationInput").value = "12";
+            document.getElementById("crossfadeInput").value = "2.5";
+        }
+    }
+}
+
+function validateAndSubmit() {
+    const song1 = getSelectedSong1();
+    const song2 = document.getElementById("selectedSong2Input").value;
+
+    if (!song1.filename) {
+        alert("Please select Song 1.");
+        return false;
+    }
+
+    if (!song2) {
+        alert("Please select Song 2 from AI recommendation or custom option.");
+        return false;
+    }
+
+    if (song1.filename === song2) {
+        alert("Song 1 and Song 2 should be different.");
+        return false;
+    }
+
+    document.getElementById("loadingText").style.display = "block";
+    return true;
+}
+
+function openFeedback() {
+    document.getElementById("feedbackModal").style.display = "flex";
+}
+
+function closeFeedback() {
+    document.getElementById("feedbackModal").style.display = "none";
+}
+
+function selectEmoji(value) {
+    selectedEmoji = value;
+    updateFeedbackText();
+}
+
+function selectStars(value) {
+    selectedRating = value + " Stars";
+    updateFeedbackText();
+}
+
+function updateFeedbackText() {
+    const box = document.getElementById("feedbackMessage");
+    box.value = "AI Mashup Feature | " + selectedEmoji + " | " + selectedRating + " | ";
+}
+
+window.onload = function() {
+    handleSong1Change();
+    selectMashupType("smooth", document.querySelector(".type-card.active"));
+
+    if (mashupCreated === "yes") {
+        openFeedback();
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+flask
+pydub
+mutagen
+requests
+librosa
+numpy
+joblib
+pandas
+scikit-learn
+openai-whisper
+demucs
+torch
+torchaudio

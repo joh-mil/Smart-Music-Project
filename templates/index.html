@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Smart Music Player</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #dff3ff;
+            color: #0f172a;
+            font-size: 21px;
+            padding-bottom: 120px;
+            zoom: 1.5;
+            /* Drastically scales up the entire UI */
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 100vh;
+            background: #1e3a8a;
+            padding: 25px 20px;
+            z-index: 50;
+        }
+
+        .sidebar h2 {
+            color: white;
+            font-size: 30px;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 34px;
+            padding: 25px;
+            margin-bottom: 16px;
+            border-radius: 20px;
+            background: #2563eb;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #38bdf8;
+            color: #020617;
+        }
+
+        .main-content {
+            margin-left: 465px;
+            padding: 40px;
+        }
+
+        .welcome-box {
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .welcome-box h2 {
+            margin: 0;
+            font-size: 60px;
+            font-weight: 800;
+        }
+
+        .welcome-box p {
+            font-size: 30px;
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            color: white;
+            padding: 70px;
+            border-radius: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.25);
+        }
+
+        .hero h1 {
+            font-size: 90px;
+            margin: 0 0 15px;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: 40px;
+            margin: 0;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .filter-box {
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            margin-bottom: 25px;
+        }
+
+        .filter-box h2 {
+            font-size: 70px;
+            margin-top: 0;
+            font-weight: 800;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box input,
+        .search-box select {
+            padding: 30px;
+            font-size: 45px;
+            border-radius: 20px;
+            border: 3px solid #93c5fd;
+            background: #f8fafc;
+        }
+
+        .search-box input {
+            width: 800px;
+        }
+
+        button,
+        .search-box button {
+            padding: 30px 60px;
+            font-size: 45px;
+            border: none;
+            border-radius: 20px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        button:hover,
+        .search-box button:hover {
+            background: #1d4ed8;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: 2.4fr 0.8fr;
+            gap: 25px;
+        }
+
+        .left-content,
+        .right-content {
+            background: white;
+            padding: 24px;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-title {
+            font-size: 32px;
+            color: #1e3a8a;
+            margin-top: 0;
+        }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .song-card {
+            background: #f8fafc;
+            padding: 35px;
+            border-radius: 30px;
+            border: 2px solid #bfdbfe;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            font-size: 30px;
+        }
+
+        .cover {
+            height: 250px;
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            margin-bottom: 25px;
+        }
+
+        .song-card h3 {
+            font-size: 45px;
+            color: #2563eb;
+            margin: 0 0 15px;
+        }
+
+        .song-card p {
+            font-size: 30px;
+            margin: 10px 0;
+        }
+
+        .actions a {
+            display: inline-block;
+            padding: 20px 30px;
+            margin: 15px 10px 0 0;
+            border-radius: 15px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        .actions .download-btn {
+            background: #16a34a;
+        }
+
+        .actions .delete {
+            background: #dc2626;
+        }
+
+        .generated-section {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            border: none;
+            padding: 22px;
+            border-radius: 22px;
+            margin-bottom: 22px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+        }
+
+        .generated-section h2 {
+            font-size: 40px;
+            color: white;
+            margin: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .generated-section h2::after {
+            content: '▼';
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+
+        .generated-section.active h2::after {
+            transform: rotate(180deg);
+        }
+
+        .toggle-content {
+            display: none;
+            margin-top: 18px;
+        }
+
+        .generated-section.active .toggle-content {
+            display: block;
+        }
+
+        .generated-card {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 18px;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+        }
+
+        .generated-card h3 {
+            font-size: 25px;
+            color: white;
+            word-break: break-word;
+            margin-bottom: 14px;
+        }
+
+        audio,
+        .generated-card audio {
+            width: 100%;
+            height: 55px;
+            margin-top: 12px;
+        }
+
+        .bottom-player {
+            position: fixed;
+            bottom: 0;
+            left: 530px;
+            right: 0;
+            background: #1e3a8a;
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            z-index: 60;
+            height: 200px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-info {
+            width: 500px;
+        }
+
+        .player-info h4 {
+            margin: 0;
+            font-size: 50px;
+        }
+
+        .player-info p {
+            margin: 5px 0 0;
+            color: #dbeafe;
+            font-size: 35px;
+        }
+
+        .control-btn {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: #020617;
+            font-size: 50px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: #0ea5e9;
+            transform: scale(1.1);
+        }
+
+        #mainPlayer {
+            flex: 1;
+            height: 55px;
+            width: 100%;
+        }
+
+        .empty {
+            font-size: 21px;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .tour-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            z-index: 200;
+        }
+
+        .tour-box {
+            display: none;
+            position: fixed;
+            background: white;
+            color: #0f172a;
+            width: 360px;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            z-index: 220;
+            font-size: 18px;
+        }
+
+        .tour-box h2 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+
+        .tour-arrow {
+            display: none;
+            font-size: 70px;
+            color: #facc15;
+            position: fixed;
+            z-index: 230;
+            animation: point 0.8s infinite alternate;
+        }
+
+        @keyframes point {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(15px);
+            }
+        }
+
+        .tour-btn {
+            margin-top: 12px;
+            font-size: 16px;
+        }
+
+        @media(max-width: 1000px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .bottom-player {
+                left: 320px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <h2>🎵 Smart Music</h2>
+        <a href="/home" class="active">🏠 Home</a>
+        <a href="/upload" id="uploadMenu">⬆ Upload File</a>
+        <a href="/mashup" id="mashupMenu">🎧 AI Mashup</a>
+        <a href="/my_downloads" id="downloadsMenu">📥 Downloads</a>
+        <a href="/logout">🚪 Logout</a>
+    </div>
+
+    <div class="main-content">
+
+        <div class="welcome-box">
+            <h2>Welcome, {{ username }} 👋</h2>
+            <p>Enjoy your smart music experience</p>
+        </div>
+
+        <div class="hero">
+            <h1>Smart Music Player</h1>
+            <p>AI powered music, karaoke, mashup and personal music library.</p>
+        </div>
+
+        <div class="filter-box" id="searchArea">
+            <h2>Filter Songs</h2>
+
+            <form class="search-box" method="GET" action="/home">
+                <input type="text" name="search" placeholder="Search title, artist, genre, mood">
+
+                <select name="genre">
+                    <option value="">All Genres</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Melody">Melody</option>
+                    <option value="Classical">Classical</option>
+                    <option value="Folk">Folk</option>
+                </select>
+
+                <select name="mood">
+                    <option value="">All Moods</option>
+                    <option value="Happy">Happy</option>
+                    <option value="Sad">Sad</option>
+                    <option value="Energetic">Energetic</option>
+                    <option value="Calm">Calm</option>
+                </select>
+
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+
+        <div class="content-layout">
+
+            <div class="left-content" id="songsArea">
+                <h2 class="section-title">🎧 Uploaded Songs</h2>
+
+                {% if songs %}
+                <div class="song-grid">
+                    {% for song in songs %}
+                    <div class="song-card">
+                        <div class="cover">🎧</div>
+
+                        <h3>{{ song['song_name'] }}</h3>
+                        <p><b>Artist:</b> {{ song['singer'] }}</p>
+                        <p><b>Language:</b> {{ song['language'] }}</p>
+                        <p><b>Genre:</b> {{ song['genre'] }}</p>
+                        <p><b>Mood:</b> {{ song['mood'] }}</p>
+                        <p><b>Uploaded By:</b> {{ song['uploaded_by'] }}</p>
+
+                        <div class="actions">
+                            <a href="#" class="play-link"
+                                data-file="{{ url_for('static', filename='songs/' ~ song['filename']) }}"
+                                data-name="{{ song['song_name'] }}" data-singer="{{ song['singer'] }}">
+                                ▶ Play
+                            </a>
+
+                            <a href="/karaoke/{{ song.filename }}" class="btn">🎤 Karaoke</a>
+                            <a href="/delete_song?filename={{ song['filename'] }}" class="delete">Delete</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="empty">No songs available. Upload songs first.</p>
+                {% endif %}
+            </div>
+
+            <div class="right-content" id="generatedArea">
+
+                <div class="generated-section" onclick="this.classList.toggle('active')">
+                    <h2>🎧 AI Mashups</h2>
+                    <div class="toggle-content" onclick="event.stopPropagation()">
+                        {% if mashups %}
+                        {% for file in mashups %}
+                        <div class="generated-card">
+                            <h3>{{ file.filename }}</h3>
+                            <audio controls src="{{ file.url }}"></audio>
+                            <div style="margin-top: 15px; display: flex; gap: 20px;">
+                                <a href="/download_file/mashup/{{ file.filename }}"
+                                    style="color: #38bdf8; font-weight: bold; text-decoration: none; font-size: 20px;">📥
+                                    Download</a>
+                                <a href="/delete_generated/mashups/{{ file.filename }}"
+                                    style="color: #ef4444; font-weight: bold; text-decoration: none; font-size: 20px;"
+                                    onclick="return confirm('Delete this mashup permanently?')">🗑️ Delete</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No mashups generated yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="generated-section" onclick="this.classList.toggle('active')">
+                    <h2>🎼 BGM Files</h2>
+                    <div class="toggle-content" onclick="event.stopPropagation()">
+                        {% if bgm_files %}
+                        {% for file in bgm_files %}
+                        <div class="generated-card">
+                            <h3>{{ file.filename }}</h3>
+                            <audio controls src="{{ file.url }}"></audio>
+                            <div style="margin-top: 15px; display: flex; gap: 20px;">
+                                <a href="/download_file/bgm/{{ file.filename }}"
+                                    style="color: #38bdf8; font-weight: bold; text-decoration: none; font-size: 20px;">📥
+                                    Download</a>
+                                <a href="/delete_generated/bgm/{{ file.filename }}"
+                                    style="color: #ef4444; font-weight: bold; text-decoration: none; font-size: 20px;"
+                                    onclick="return confirm('Delete this BGM permanently?')">🗑️ Delete</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No BGM generated yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="generated-section" onclick="this.classList.toggle('active')">
+                    <h2>🎤 Karaoke Files</h2>
+                    <div class="toggle-content" onclick="event.stopPropagation()">
+                        {% if karaoke_files %}
+                        {% for file in karaoke_files %}
+                        <div class="generated-card">
+                            <h3>{{ file.filename }}</h3>
+                            <audio controls src="{{ file.url }}"></audio>
+                            <div style="margin-top: 15px; display: flex; gap: 20px;">
+                                <a href="/download_file/karaoke/{{ file.filename }}"
+                                    style="color: #38bdf8; font-weight: bold; text-decoration: none; font-size: 20px;">📥
+                                    Download</a>
+                                <a href="/delete_generated/karaoke/{{ file.filename }}"
+                                    style="color: #ef4444; font-weight: bold; text-decoration: none; font-size: 20px;"
+                                    onclick="return confirm('Delete this recording permanently?')">🗑️ Delete</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No karaoke files yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bottom-player">
+        <div class="player-info">
+            <h4 id="playerTitle">No song selected</h4>
+            <p id="playerSinger">Choose a song to play</p>
+        </div>
+
+        <button class="control-btn" onclick="previousSong()">⏮</button>
+        <button class="control-btn" onclick="togglePlay()">⏯</button>
+        <button class="control-btn" onclick="nextSong()">⏭</button>
+
+        <audio id="mainPlayer" controls></audio>
+    </div>
+
+    <div class="tour-overlay" id="tourOverlay"></div>
+    <div class="tour-arrow" id="tourArrow">➡</div>
+
+    <div class="tour-box" id="tourBox">
+        <h2 id="tourTitle">Welcome!</h2>
+        <p id="tourText">Let me guide you.</p>
+        <button class="tour-btn" onclick="nextTour()">Next</button>
+        <button class="tour-btn" onclick="skipTour()">Skip</button>
+    </div>
+
+    <script>
+        let currentSongIndex = -1;
+        let songList = [];
+
+        function collectSongs() {
+            const links = document.querySelectorAll(".play-link");
+            songList = [];
+
+            links.forEach(function (link) {
+                songList.push({
+                    file: link.getAttribute("data-file"),
+                    name: link.getAttribute("data-name"),
+                    singer: link.getAttribute("data-singer")
+                });
+            });
+        }
+
+        function playSong(file, name, singer) {
+            const player = document.getElementById("mainPlayer");
+
+            player.src = file;
+            player.play();
+
+            document.getElementById("playerTitle").innerText = name;
+            document.getElementById("playerSinger").innerText = singer;
+
+            currentSongIndex = songList.findIndex(function (song) {
+                return song.file === file;
+            });
+        }
+
+        function setupPlayButtons() {
+            const links = document.querySelectorAll(".play-link");
+
+            links.forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    const file = link.getAttribute("data-file");
+                    const name = link.getAttribute("data-name");
+                    const singer = link.getAttribute("data-singer");
+
+                    playSong(file, name, singer);
+                });
+            });
+        }
+
+        function togglePlay() {
+            const player = document.getElementById("mainPlayer");
+
+            if (!player.src) {
+                if (songList.length > 0) {
+                    playSong(songList[0].file, songList[0].name, songList[0].singer);
+                }
+                return;
+            }
+
+            if (player.paused) {
+                player.play();
+            } else {
+                player.pause();
+            }
+        }
+
+        function nextSong() {
+            if (songList.length === 0) {
+                return;
+            }
+
+            currentSongIndex++;
+
+            if (currentSongIndex >= songList.length) {
+                currentSongIndex = 0;
+            }
+
+            const song = songList[currentSongIndex];
+            playSong(song.file, song.name, song.singer);
+        }
+
+        function previousSong() {
+            if (songList.length === 0) {
+                return;
+            }
+
+            currentSongIndex--;
+
+            if (currentSongIndex < 0) {
+                currentSongIndex = songList.length - 1;
+            }
+
+            const song = songList[currentSongIndex];
+            playSong(song.file, song.name, song.singer);
+        }
+
+        let tourStep = 0;
+
+        const tourData = [
+            {
+                title: "Step 1: Upload Songs",
+                text: "Click Upload File to add your own music.",
+                boxTop: "130px",
+                boxLeft: "350px",
+                arrowTop: "105px",
+                arrowLeft: "285px"
+            },
+            {
+                title: "Step 2: Filter Songs",
+                text: "Use this area to filter by song, singer, genre or mood.",
+                boxTop: "330px",
+                boxLeft: "380px",
+                arrowTop: "350px",
+                arrowLeft: "330px"
+            },
+            {
+                title: "Step 3: Play Music",
+                text: "Your uploaded songs appear here. Click Play to listen.",
+                boxTop: "480px",
+                boxLeft: "390px",
+                arrowTop: "520px",
+                arrowLeft: "340px"
+            },
+            {
+                title: "Step 4: AI Mashup",
+                text: "Click AI Mashup to generate a smooth mix.",
+                boxTop: "210px",
+                boxLeft: "350px",
+                arrowTop: "190px",
+                arrowLeft: "285px"
+            },
+            {
+                title: "Step 5: Music Controls",
+                text: "Use previous, play or pause, and next buttons here.",
+                boxTop: "520px",
+                boxLeft: "650px",
+                arrowTop: "650px",
+                arrowLeft: "620px"
+            }
+        ];
+
+        function startTour() {
+            if (localStorage.getItem("smartMusicTourDone") === "yes") {
+                hideTour();
+                return;
+            }
+
+            document.getElementById("tourOverlay").style.display = "block";
+            document.getElementById("tourBox").style.display = "block";
+            document.getElementById("tourArrow").style.display = "block";
+
+            showTourStep();
+        }
+
+        function showTourStep() {
+            const data = tourData[tourStep];
+
+            document.getElementById("tourTitle").innerText = data.title;
+            document.getElementById("tourText").innerText = data.text;
+
+            document.getElementById("tourBox").style.top = data.boxTop;
+            document.getElementById("tourBox").style.left = data.boxLeft;
+
+            document.getElementById("tourArrow").style.top = data.arrowTop;
+            document.getElementById("tourArrow").style.left = data.arrowLeft;
+        }
+
+        function nextTour() {
+            tourStep++;
+
+            if (tourStep >= tourData.length) {
+                skipTour();
+                return;
+            }
+
+            showTourStep();
+        }
+
+        function skipTour() {
+            localStorage.setItem("smartMusicTourDone", "yes");
+            hideTour();
+        }
+
+        function hideTour() {
+            document.getElementById("tourOverlay").style.display = "none";
+            document.getElementById("tourBox").style.display = "none";
+            document.getElementById("tourArrow").style.display = "none";
+        }
+
+        window.onload = function () {
+            collectSongs();
+            setupPlayButtons();
+            startTour();
+        };
+
+        
+    </script>
+
+</body>
+
+</html>

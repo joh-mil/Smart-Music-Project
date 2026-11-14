@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#f1f5f9;
+            zoom: 1.0;
+            font-size: 35px;
+        }
+
+        .header{
+            background:linear-gradient(135deg,#0f172a,#1e3a8a);
+            color:white;
+            padding:50px;
+            text-align:center;
+        }
+
+        .header h1{
+            margin-bottom:20px;
+            font-size: 90px;
+            font-weight: 900;
+        }
+
+        .header p{
+            font-size: 45px;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+            gap:30px;
+            padding:40px;
+        }
+
+        .stat-card{
+            background:white;
+            padding:50px;
+            border-radius:25px;
+            text-align:center;
+            box-shadow:0 8px 20px rgba(0,0,0,0.1);
+            transition:0.3s;
+        }
+
+        .stat-card:hover{
+            transform:translateY(-10px);
+            box-shadow:0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .stat-card h2{
+            font-size:130px;
+            margin-bottom:15px;
+            color:#2563eb;
+            font-weight: 900;
+        }
+
+        .stat-card p{
+            color:#475569;
+            font-size:55px;
+            font-weight:900;
+        }
+
+        .dashboard{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+            gap:30px;
+            padding:0 40px 40px;
+        }
+
+        .card{
+            background:white;
+            padding:50px;
+            border-radius:25px;
+            text-align:center;
+            text-decoration:none;
+            color:black;
+            box-shadow:0 8px 20px rgba(0,0,0,0.1);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            background:#dbeafe;
+            transform:translateY(-10px);
+            box-shadow:0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h3{
+            color:#1e3a8a;
+            margin-bottom:25px;
+            font-size:65px;
+            font-weight: 900;
+        }
+
+        .card p{
+            color:#475569;
+            line-height:1.4;
+            font-size:40px;
+            font-weight: 600;
+        }
+
+        .logout{
+            text-align:center;
+            padding-bottom:35px;
+        }
+
+        .logout a{
+            background:#dc2626;
+            color:white;
+            padding:35px 80px;
+            text-decoration:none;
+            border-radius:30px;
+            font-weight:900;
+            font-size:55px;
+            display: inline-block;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            transition: all 0.3s ease;
+        }
+
+        .logout a:hover{
+            background:#b91c1c;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        @media(max-width:768px){
+
+            .stats,
+            .dashboard{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>⚙️ Admin Dashboard</h1>
+        <p>Smart Music Player Analytics & Controls</p>
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h2>{{ total_users }}</h2>
+            <p>👥 Total Users</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ total_songs }}</h2>
+            <p>🎵 Total Songs</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ mashup_count }}</h2>
+            <p>🎧 AI Mashups</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ karaoke_count }}</h2>
+            <p>🎤 Karaoke Files</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ bgm_count }}</h2>
+            <p>🎼 BGM Files</p>
+        </div>
+
+    </div>
+
+    <!-- ADMIN FEATURES -->
+
+    <div class="dashboard">
+
+        <a href="/admin-users" class="card">
+            <h3>👥 Registered Users</h3>
+            <p>View registered members and user information.</p>
+        </a>    
+
+        <a href="/admin-upload-song" class="card">
+            <h3>⬆ Upload Dataset Songs</h3>
+            <p>Upload songs for all users in the AI music platform.</p>
+        </a>
+
+    <!-- ADD THIS CARD INSIDE <div class="dashboard"> -->
+
+<a href="/admin-upload-lyrics" class="card">
+    <h3>📝 Upload Lyrics</h3>
+    <p>Upload song lyrics files for karaoke display.</p>
+</a>    
+
+        <a href="/admin-train" class="card">
+            <h3>🤖 Train AI Model</h3>
+            <p>Manage mood prediction and genre AI model training.</p>
+        </a>
+
+        <a href="/admin-settings" class="card">
+            <h3>⚙️ System Settings</h3>
+            <p>Control application settings and admin operations.</p>
+        </a>
+
+    </div>
+
+    <div class="logout">
+        <a href="/admin-logout">🚪 Logout</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Lyrics Database</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial,sans-serif;
+            background:#e0f2fe;
+            color:#0f172a;
+        }
+
+        .container{
+            width:90%;
+            max-width:1200px;
+            margin:40px auto;
+            background:white;
+            padding:45px;
+            border-radius:25px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        h1{
+            color:#1e3a8a;
+            font-size:52px;
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .upload-box{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:20px;
+            margin-bottom:35px;
+            flex-wrap:wrap;
+        }
+
+        .upload-box input{
+            width:65%;
+            padding:18px;
+            border:3px solid #93c5fd;
+            border-radius:15px;
+            font-size:20px;
+        }
+
+        .upload-box button{
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:18px 35px;
+            border-radius:15px;
+            font-size:22px;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 8px 20px rgba(37,99,235,0.3);
+        }
+
+        .lyrics-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:25px;
+        }
+
+        .lyrics-card{
+            background:#eff6ff;
+            border:3px solid #93c5fd;
+            border-radius:20px;
+            padding:25px;
+            box-shadow:0 8px 20px rgba(37,99,235,0.15);
+        }
+
+        .lyrics-card h3{
+            margin:0;
+            color:#1d4ed8;
+            font-size:28px;
+            word-break:break-word;
+        }
+
+        .delete-btn{
+            display:inline-block;
+            margin-top:18px;
+            background:#dc2626;
+            color:white;
+            text-decoration:none;
+            padding:12px 24px;
+            border-radius:12px;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .empty{
+            text-align:center;
+            font-size:28px;
+            color:#64748b;
+            font-weight:bold;
+            margin:35px 0;
+        }
+
+        .back-btn{
+            display:inline-block;
+            margin-top:40px;
+            background:#dc2626;
+            color:white;
+            text-decoration:none;
+            padding:18px 35px;
+            border-radius:16px;
+            font-size:24px;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📝 Uploaded Lyrics Database</h1>
+
+    <form action="/admin-upload-lyrics"
+          method="POST"
+          enctype="multipart/form-data"
+          class="upload-box">
+
+        <input type="file"
+               name="lyrics_files"
+               accept=".txt,.lrc"
+               multiple
+               required>
+
+        <button type="submit">⬆ Upload Lyrics</button>
+
+    </form>
+
+    {% if lyrics_files %}
+
+        <div class="lyrics-grid">
+            {% for file in lyrics_files %}
+                <div class="lyrics-card">
+                    <h3>🎵 {{ file }}</h3>
+
+                    <a href="/delete-lyrics/{{ file }}"
+                       class="delete-btn"
+                       onclick="return confirm('Delete this lyrics file?')">
+                        🗑 Delete
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+            No lyrics uploaded yet.
+        </div>
+
+    {% endif %}
+
+    <a href="/admin-dashboard" class="back-btn">
+        ⬅ Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

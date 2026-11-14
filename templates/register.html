@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Account</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 120px;
+            border-radius: 50px;
+            width: 1100px;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        p {
+            color: #dbeafe;
+            margin-bottom: 50px;
+        }
+
+        input {
+            width: 95%;
+            padding: 35px;
+            margin: 25px 0;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            font-size: 45px;
+            background: white;
+            color: #0f172a;
+        }
+
+        button {
+            width: 95%;
+            padding: 40px;
+            margin-top: 40px;
+            border: none;
+            border-radius: 20px;
+            background: #22c55e;
+            color: white;
+            font-weight: bold;
+            font-size: 55px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #16a34a;
+            transform: translateY(-5px);
+        }
+
+        a {
+            display: block;
+            margin-top: 50px;
+            color: #bfdbfe;
+            text-decoration: none;
+            font-size: 50px;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            font-size: 35px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 200px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo">🎵</div>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <h2 style="font-size:100px;">
+            Create Your Account
+        </h2>
+
+        <p style="
+color:#dbeafe;
+margin-bottom:60px;
+font-size:45px;
+">
+            Start your AI powered music journey 🎧
+        </p>
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Create Username" required>
+            <input type="password" name="password" placeholder="Create Password" required>
+
+            <button type="submit">
+                🚀 Create Account
+            </button>
+        </form>
+
+        <div style="
+margin-top:60px;
+background:#0f172a;
+padding:50px;
+border-radius:30px;
+font-size:40px;
+line-height:1.6;
+color:#cbd5e1;
+text-align: left;
+">
+
+            🎶 Upload your own songs<br>
+            🎤 Sing with Karaoke Studio<br>
+            🔥 Generate AI Mashups<br>
+            🤖 Smart Mood & Genre Detection
+
+        </div>
+
+        <a href="/login">Already have an account? Login</a>
+        <a href="/start">Back to previous page</a>
+    </div>
+
+</body>
+
+</html>
